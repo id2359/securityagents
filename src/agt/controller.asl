@@ -21,12 +21,19 @@ state(normal).
        .send(front, achieve,start);                   // send a message to the front camera
        .send(back, achieve,start); 
        .send(notifier, achieve,start);
-       .send(front, achieve,take_picture);
-       .send(back, achieve,take_picture).
+       !monitor.
+      
 
 +front(Object) : true
     <- .print("front camera detected: ", Object, "\n");
        !analyse(front,Object).
+
++!monitor : true
+    <- .print("monitoring\n");
+       .send(front, achieve,take_picture);
+       .send(back, achieve,take_picture);
+       .wait(10000);
+       !monitor.
 
 +!analyse(Camera, person) : true
     <- .print("analyse ", Camera, " detected a person\n");
